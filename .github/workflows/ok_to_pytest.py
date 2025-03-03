@@ -16,17 +16,20 @@ def run_ok_test(test_name):
     # If we didn't find the test
     assert False, f"Could not find score for {test_name}"
 
-def test_bfs_0():
-    run_ok_test("test_ses07_solution_bfs_0")
+def test_ses08_solution_dijkstra_0():
+    run_ok_test("test_ses08_solution_dijkstra_0")
 
-def test_bfs_track_path_0():
-    run_ok_test("test_ses07_solution_bfs_track_path_0")
+def test_ses08_solution_dijkstra_1():
+    run_ok_test("test_ses08_solution_dijkstra_1")
 
-def test_bfs_track_path_1():
-    run_ok_test("test_ses07_solution_bfs_track_path_1")
+def test_ses08_solution_lecture_graph_0():
+    run_ok_test("test_ses08_solution_lecture_graph_0")
 
-def test_create_bfs_graph_0():
-    run_ok_test("test_ses07_solution_create_bfs_graph_0")
+def test_ses08_solution_lecture_graph_1():
+    run_ok_test("test_ses08_solution_lecture_graph_1")
 
-def test_create_bfs_graph_1():
-    run_ok_test("test_ses07_solution_create_bfs_graph_1")
+def test_ses08_solution_lecture_graph_2():
+    run_ok_test("test_ses08_solution_lecture_graph_2")
+
+def test_ses08_solution_lecture_graph_3():
+    run_ok_test("test_ses08_solution_lecture_graph_3")

@@ -1,21 +1,22 @@
 test = {
-  'name': 'test_ses07_solution_create_bfs_graph_1',
+  'name': 'test_ses08_solution_dijkstra_0',
   'points': 1,
   'suites': [
     {
       'cases': [
         {
           'code': r"""
-          >>> ex_graph = create_bfs_graph()
-          >>> [x in ex_graph.children_of('Helena') for x in ['John', 'Helena', 'Donald', 'Paul']]
-          [True, False, False, True]
+          >>> graph = gs.Digraph(lecture_graph())
+          >>> dists, prev_nodes = dijkstra(graph, 'a')
+          >>> [dists['b'], dists['e'], dists['c'], dists['d']]
+          [1, 7, 3, 5]
           """,
           'hidden': False
         }
       ],
       'scored': True,
       'setup': r"""
-      >>> from ses07 import *
+      >>> from ses08 import *
       """,
       'teardown': '',
       'type': 'doctest'

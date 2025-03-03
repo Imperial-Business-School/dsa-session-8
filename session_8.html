@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>session_7</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>session_8</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7516,27 +7516,29 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Session-7:-Graph-algorithms-on-unweighted-graphs">Session 7: Graph algorithms on unweighted graphs<a class="anchor-link" href="#Session-7:-Graph-algorithms-on-unweighted-graphs">¶</a></h1><p><em>Data Structures and Algorithms</em></p>
+<h1 id="Session-8:-Graph-algorithms-on-weighted-graphs">Session 8: Graph algorithms on weighted graphs<a class="anchor-link" href="#Session-8:-Graph-algorithms-on-weighted-graphs">¶</a></h1><p><em>Data Structures and Algorithms</em></p>
 <p><em>Imperial College Business School</em></p>
 <hr/>
-<p>Graphs are ubiquitous, and efficiently solving graph problems is crucial to companies from Google to Facebook. We will start from graph search in unweighted graphs. We will build on our work on algorithms and data structures to study the breadth-first search algorithm and the queue data structure, seeing how the design of algorithms and data structures go in lockstep. We will also apply the algorithm to a real-world social network problem.</p>
+<p>We will continue to work on graph algorithms, specifically on Dijkstra's algorithm for shortest paths in weighted graphs.</p>
 <hr/>
 <h2 id="Preparation">Preparation<a class="anchor-link" href="#Preparation">¶</a></h2><p><strong>Readings:</strong></p>
-<p>Guttag: Chapter 14.2.</p>
-<p>OR</p>
-<p>Kun, Jeremy. Depth- and Breadth-First Search.</p>
+<p>Wikipedia. Dijkstra’s algorithm.</p>
 <ul>
-<li><a href="https://jeremykun.com/2013/01/22/depth-and-breadth-first-search/">https://jeremykun.com/2013/01/22/depth-and-breadth-first-search/</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm</a></li>
 </ul>
-<p>Moore, Karleigh. Breadth-first search (BFS).</p>
+<p>Abiy, Thaddeus, et al. Dijkstra’s shortest path algorithm.</p>
 <ul>
-<li><a href="https://brilliant.org/wiki/breadth-first-search-bfs/">https://brilliant.org/wiki/breadth-first-search-bfs/</a></li>
+<li><a href="https://brilliant.org/wiki/dijkstras-short-path-finder/">https://brilliant.org/wiki/dijkstras-short-path-finder/</a></li>
+</ul>
+<p>Hazzard, Erik. Dijkstra’s Algorithm - Shortest Path</p>
+<ul>
+<li><a href="http://vasir.net/blog/game_development/dijkstras_algorithm_shortest_path">http://vasir.net/blog/game_development/dijkstras_algorithm_shortest_path</a></li>
 </ul>
 <p><strong>Questions:</strong></p>
 <p>Please read the material above, and think about how you would explain to your classmates:</p>
 <ul>
-<li>What are three examples of everyday things that can be represented as unweighted graphs?</li>
-<li>What are assumptions made in the breadth-first search algorithm? What is the output of the algorithm?</li>
+<li>What are the assumptions made in Dijkstra’s algorithm, and what is the output?</li>
+<li>How does the algorithm work?</li>
 </ul>
 <hr/>
 </div>
@@ -7549,10 +7551,10 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Submission">Submission<a class="anchor-link" href="#Submission">¶</a></h2><p>At the end of this session, you will submit the file <code>ses07.py</code> following the instructions below.</p>
+<h2 id="Submission">Submission<a class="anchor-link" href="#Submission">¶</a></h2><p>At the end of this session, you will submit the file <code>ses08.py</code> following the instructions below.</p>
 <ul>
-<li>Questions 1 - 3 are the main part of the session.</li>
-<li>Questions 4 - 5 are optional. It is recommended that you work on these if you finish the required questions early, or on your own time as extra practice.</li>
+<li>Questions 1-3 are the main part of the session.</li>
+<li>Question 4 is optional. It is recommended that you work on these if you finish the required questions early, or on your own time as extra practice.</li>
 </ul>
 <h2 id="Using-OK">Using OK<a class="anchor-link" href="#Using-OK">¶</a></h2><p>We will use a program called <code>ok</code> to test our code.</p>
 <p>You should have OK in the Codespace for this session. The session will include instructions for running <code>ok</code> commands as we need them.</p>
@@ -7580,12 +7582,20 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Graphs-and-breadth-first-search">Graphs and breadth-first search<a class="anchor-link" href="#Graphs-and-breadth-first-search">¶</a></h2><h3 id="Representing-graphs">Representing graphs<a class="anchor-link" href="#Representing-graphs">¶</a></h3><p>In the previous session, we worked on object-oriented programming. We learned to represent new types of data (such as pocket monsters, nodes, and queues) as Python classes. This may start to inspire us to think of any problem in terms of elements that might be best represented as classes.</p>
-<p>In the case of graphs, we might think of graph <em>nodes</em> and <em>edges</em> as different objects for which we could write classes. A node would have at least a name, while an edge might store connections to two nodes.</p>
-<p>This is a very useful way of thinking in abstractions, especially if our objects start to become more complicated, with several attributes and related actions, like our pocket monsters. The Guttag book presents graph problems by implementing nodes and edges as classes, and graphs as another class that consists of nodes and edges,</p>
-<p>This is a great exercise for understanding OOP, but for our specific and  purposes - finding shortest paths using breadth-first search - we'll simplify it a little. Our nodes and edges won't have too many attributes, so we won't write separate classes to represent them. Like the book, we'll use a Graph class, but inside it we'll have a slightly different graph implementation without using separate classes for nodes and edges.</p>
-<p>We'll follow the <em>adjacency list</em> graph specification you learned in the lecture. More specifically, we'll store the edges of a graph in a <em>dictionary</em> such that the keys of the dictionary are the nodes, and the values are a <em>set</em> of nodes it has direct edges to (these are called its <em>child</em> nodes). This dictionary then represents all the edges in the graph.</p>
-<p>For example, the following dictionary defines the adjacency list of a directed graph with four nodes.</p>
+<h2 id="Implementing-Dijkstra's-algorithm">Implementing Dijkstra's algorithm<a class="anchor-link" href="#Implementing-Dijkstra's-algorithm">¶</a></h2>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Weighted-graphs">Weighted graphs<a class="anchor-link" href="#Weighted-graphs">¶</a></h2><p>We've now started implementing graph algorithms, specifically the breadth-first search (BFS). This allowed us to find the shortest path between two nodes of a graph (such as Kevin Bacon and Nicole Kidman in the network of Hollywood actors).</p>
+<p>The BFS algorithm assumes that graph edges are unweighted (or all have equal weights), which fits some networks. But when edges have weights (lengths, costs) associated with them, we need a different algorithm to find shortest paths. We'll next implement Dijkstra's shortest-path algorithm for this purpose.</p>
+<p>We'll adapt our <code>Graph</code> code from last time to deal with weighted edges. We represented a graph using an adjacency list, specifically a dictionary where the dictionary keys were nodes and the dictionary values were sets of other nodes this node was connected to. Now we'll adjust this representation to include edge weights. We'll add the weights in the dictionary values, which will become dictionaries themselves instead of sets. Here's an example adjacency list dictionary of a directed graph with weights. Try drawing the graph on a piece of paper.</p>
 </div>
 </div>
 </div>
@@ -7597,7 +7607,12 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">adj_list</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'a'</span><span class="p">:{</span><span class="s1">'b'</span><span class="p">},</span> <span class="s1">'b'</span><span class="p">:{</span><span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">},</span> <span class="s1">'c'</span><span class="p">:{</span><span class="s1">'d'</span><span class="p">},</span> <span class="s1">'d'</span><span class="p">:</span><span class="nb">set</span><span class="p">()}</span> <span class="c1"># 'd' has no nodes starting from it, so empty set.</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">distances</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s1">'a'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'b'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+<span class="s1">'b'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'c'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+<span class="s1">'c'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'d'</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+<span class="s1">'d'</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -7610,140 +7625,50 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We will use a class, <code>Digraph</code>, similar to the one in your textbook, to combine the adjacency list representation with functionality we use with graphs.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Digraph</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">""" </span>
-<span class="sd">    Directed graph.</span>
-<span class="sd">       </span>
-<span class="sd">    edges is a dictionary mapping each node to a set of its children nodes.</span>
-<span class="sd">    num_edges is the total number of edges.</span>
-<span class="sd">    """</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_edges</span> <span class="o">=</span> <span class="mi">0</span>
-    
-    <span class="c1"># more code</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Undirected-graphs">Undirected graphs<a class="anchor-link" href="#Undirected-graphs">¶</a></h3><p>To implement an undirected graph, we can use much the same ideas as a directed graph. In fact, we'll simply write <code>Graph</code> as a subclass of <code>Digraph</code>, but with edges in two directions.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Graph</span><span class="p">(</span><span class="n">Digraph</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">""" </span>
-<span class="sd">    Undirected graph: two one-way edges for every edge</span>
-<span class="sd">    """</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
-        <span class="n">Digraph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
-        <span class="n">Digraph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>This is an example of <em>inheritance</em> between Python objects. Creating a <code>Graph(Digraph)</code> tells Python that a <code>Graph</code> object has all the methods of a <code>Digraph</code> object --- only the way we add edges is different. This method is "overwritten" by the new class.
-The difference is that now we're adding a directed edge in both ways to create an undirected graph. This is an inefficient way of implementing an undirected graph, but a simple one.</p>
-<h3 id="Importing-modules">Importing modules<a class="anchor-link" href="#Importing-modules">¶</a></h3><p>In this session, the exercises are in <code>ses07.py</code>, but the graph implementation is in a separate Python file <code>ses07_data_structures.py</code>. This is useful as we don't need to edit the data structures, and putting them in our main file would make it quite long. Furthermore, if we package our code into modules, we can use the same code for solving different problems in different scripts.</p>
-<p>How do we make the data structures available to us in <code>ses07.py</code>? We can use the command</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ses07_data_structures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">Digraph</span><span class="p">,</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">QueueNode</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>This tells Python to look for a module called <code>ses07_data_structures</code> and import the definitions <code>Graph, Digraph, Queue, QueueNode</code>. These definitions could be any names we define in the module: classes, functions, or variables. Once we run this line of code, we can use them in <code>ses07.py</code>, for example with <code>g = Graph()</code>.</p>
-<p>Alternatively, we could use</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ses07_data_structures</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ds</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>This would give us access to everything in the file, but giving it the name <code>ds</code>. Then we would access them through this name with the dot notation: <code>g = ds.Graph()</code>.</p>
-<p><strong>Before you run the import command, ensure the module to import is in the same directory as your main .py file.</strong> The import command works by default in the current directory.</p>
-<blockquote>
-<p><strong>Advanced</strong>. If we want to load a module we've saved into another directory, we'll need to do some more steps to make sure Python knows where to find our module. It involves adding our directory to Python's "system path" using the <code>sys</code> module. It's a bit technical so we won't go into detail here. If you end up in a situation where you need to do this, search for "python import from another directory".</p>
-</blockquote>
-<h3 id="Question-2:-Creating-a-graph">Question 2: Creating a graph<a class="anchor-link" href="#Question-2:-Creating-a-graph">¶</a></h3><p>Examine the classes  <code>Digraph</code> and <code>Graph</code> and their methods. Using the methods, recreate the graph we used as an example in the lecture. Complete the function <code>create_bfs_graph</code>  in <code>ses07.py</code>.</p>
-<p>Test your implementation with</p>
-<pre><code>python ok -q create_bfs_graph
+<h3 id="Question-2:-Lecture-graph">Question 2: Lecture graph<a class="anchor-link" href="#Question-2:-Lecture-graph">¶</a></h3><p>Write the example from the lecture as a dictionary. For example, the weight of the edge from <code>a</code> to <code>b</code> should 1. Notice that this is a directed graph: for example, there is no edge starting from node <code>e</code>. Complete your implementation in the function <code>lecture_graph</code> in <code>ses08.py</code>. You can test your implementation with</p>
+<pre><code>python ok -q lecture_graph
 </code></pre>
-<blockquote>
-<p><strong>Note.</strong> Due to the way the class <code>Graph</code> has been implemented, when we add an undirected edge from John to Helena, it works as an edge both ways. We don't need to repeat <code>add_edge</code> from Helena to John.</p>
-</blockquote>
-<p><strong>Exercise.</strong> (There are no tests for this exercise.) Try out the different graph methods on your created graph in the Python console:</p>
+<p>The Python file <code>ses08_graphs.py</code> contains the implementations of <code>Digraph</code> and <code>Graph</code> for directed and undirected graphs. These are similar to the ones we used in the previous tutorial, but with edge weights.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Dijkstra's-shortest-path-algorithm">Dijkstra's shortest-path algorithm<a class="anchor-link" href="#Dijkstra's-shortest-path-algorithm">¶</a></h2><p>Next, let's implement Dijkstra's algorithm for finding shortest paths. We'll start with the approach we went through in the lecture, which gives us a polynomial running time $O(mn)$. In the extra problem, you'll have a chance to implement a much faster version of the algorithm using a heap data structure.</p>
+<p>Here are the steps of Dijkstra's algorithm. It works on a graph where the set of nodes (vertices) is $V$, and edges $E$.</p>
+<p><strong>Initialisation</strong>: (starting from node $s$)</p>
+<ul>
+<li>We store the set of nodes we have visited (explored) so far in the set $X$. This set starts empty, except we add the starting node $s$ to $X$.</li>
+<li>We store the shortest distances from $s$ to all nodes in the dictionary $A$. Initially we set the distance from the starting node to itself to zero: $A[s] = 0$.</li>
+</ul>
+<p><strong>Main loop</strong>, repeated while we haven't visited all nodes: (that is, the set $X$ is not equal to the set of all nodes $V$, or $X \neq V$):</p>
+<ul>
+<li>We loop through all <em>edges starting in nodes we've visited</em> and <em>ending in nodes we have not visited yet</em>.</li>
+<li>In other words, we go through all edges $v \to w$ where $v$ is in the set $X$ and $w$ is not in $X$</li>
+<li>Among these edges, we pick the edge that minimizes the Dijkstra score $A[v] + c_{vw}$, where $A[v]$ is the shortest distance to the already visited node $v$ and $c_{vw}$ is the edge weight from $v \to w$</li>
+<li>We make note of this minimum-score edge, call it $v^* \to w^*$. That is, it starts from the node $v^*$ and ends in the node $w^*$</li>
+<li>We add the end node $w^*$ to the set of nodes we have visited $X$, and set its minimum distance to $A[w^*]=A[v^*]+c_{v^*w^*}$</li>
+<li>We then repeat these steps until we've visited all nodes</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The function <code>dijkstra</code> in the Python file <code>ses08.py</code> contains code for Dijkstra's algorithm. Our goal is to understand the implementation.</p>
+<p>Go through the code and try to relate each step to the algorithm above. A good way to start is by looking at the initialization step in the code and comparing it to the algorithm above. Try to connect the Python steps to the steps above. Then move into the main loop, making the same comparison with the algorithm above. The comments in the file provide hints for your implementation.</p>
+<p>In words, each iteration of the main loop will run through all edges starting from each node that we have already explored (the nodes in $X$) using a nested for loop. It checks if these edges end outside of $X$, and then calculates the Dijkstra score for the edge. Among these edges, the loop should pick the one with the minimum Dijkstra score as defined above. It keeps track of the minimum score using the helper variables <code>min_dist, min_edge</code>. It then uses the minimum Dijkstra score edge to add the destination node to $X$ as described in the algorithm above.</p>
+<p>Test the algorithm on the lecture example graph. Create the example graph from your dictionary using</p>
 </div>
 </div>
 </div>
@@ -7755,11 +7680,7 @@ The difference is that now we're adding a directed edge in both ways to create a
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">create_bfs_graph</span><span class="p">()</span>
-<span class="n">g</span><span class="o">.</span><span class="n">children_of</span><span class="p">(</span><span class="s1">'Helena'</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="s1">'Donald'</span><span class="p">)</span>
-<span class="n">g</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="s1">'Donald'</span><span class="p">,</span> <span class="s1">'Helena'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="c1"># this will call the __str__ method</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span><span class="n">lecture_graph</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -7772,96 +7693,13 @@ The difference is that now we're adding a directed edge in both ways to create a
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Breadth-first-search">Breadth-first search<a class="anchor-link" href="#Breadth-first-search">¶</a></h3><p>Now we're ready to start implementing search algorithms. We've seen that the breadth-first search (BFS) algorithm allows us to find the shortest distances between two nodes in a (unweighted) graph. We'll implement BFS, and apply it to a large real-world dataset in the next section. The algorithm recipe is described below.</p>
-<p><strong>Algorithm</strong>: BFS(graph $G$, start vertex $s$)</p>
-<ul>
-<li>Initialize: mark all nodes unexplored except $s$ explored</li>
-<li>Use $Q$ = queue data structure, add $s$ to $Q$</li>
-<li>Main loop: While queue $Q$ is not empty:<ul>
-<li>Remove the first node of $Q$ and call it $v$</li>
-<li>For each edge $(v,w)$: if $w$ unexplored:<ul>
-<li>Mark $w$ explored</li>
-<li>Add $w$ to $Q$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>The extra exercise in Session 6 asked us to implemented a queue data structure. This now proves very useful as we use a queue to store the nodes we can directly reach from already visited nodes. For your convenience, a <code>Queue</code> implementation is provided in the Python file.</p>
-<h3 id="Question-3">Question 3<a class="anchor-link" href="#Question-3">¶</a></h3><p>Complete the breadth-first search algorithm in the Python code file.
-The algorithm steps are exactly those in the recipe above. We start with a graph and a starting node, and keep track of a a <em>dictionary</em> of explored nodes and a <em>queue</em> of unexplored nodes that are adjacent to explored nodes.</p>
-<p>You'll need the following <code>Queue</code> methods:</p>
-<ul>
-<li><code>q = Queue()</code> - initialize empty queue</li>
-<li><code>q.enqueue(x)</code> - add x to end of queue</li>
-<li><code>q.dequeue()</code> - pop first item of queue, return the item</li>
-<li><code>q.is_empty()</code> - check if queue is empty, return True/False</li>
-</ul>
-<p>The beauty of this is that we don't need to know the implementation details - we can just use these methods to implement the BFS algorithm. If you'd like to go through how the data structure works in detail, you can examine the code in <code>ses07_data_structures.py</code>.</p>
-<p>You can try these methods in the Python console with the following commands:</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
-<span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s1">'Ralf'</span><span class="p">)</span>
-<span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s1">'Sophie'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
-<span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s1">'Lu'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
-<span class="n">first_one_out</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">dequeue</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'The first in the queue was: '</span> <span class="o">+</span> <span class="n">first_one_out</span> <span class="o">+</span> <span class="s1">', but we just popped them out.'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">is_empty</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>To implement BFS, you will also need one of the graph methods:</p>
-<ul>
-<li><code>graph.children_of(v)</code> - returns node <code>v</code>'s neighboring nodes</li>
-</ul>
-<p>Complete the function <code>bfs</code> in <code>ses07.py</code>. You can test your implementation with</p>
-<pre><code>python ok -q bfs
+<h3 id="Question-3">Question 3<a class="anchor-link" href="#Question-3">¶</a></h3><p>The algorithm now correctly calculates shortest distances but does not yet keep track of the shortest paths taken. Let's update the algorithm to also keep track of <code>prev_nodes</code>, which is a dictionary of the previous node on path to any node. If we store the previous node on the shortest path, we can backtrack later to recreate the shortest paths.</p>
+<p>You should make the following change in the algorithm. As you mark a node visited, you should set the value of <code>prev_nodes</code> to be the source node from which the current node was visited. You'll then want to update your function to also return <code>prev_nodes</code>.</p>
+<p>You can test your implementation with</p>
+<pre><code>python ok -q dijkstra
 </code></pre>
-<p>In order to calculate distances, we'll add a variable <code>dists</code> (a dictionary) which keeps track of distances to all nodes. Specifically, it should be initialized to zero for the <code>start</code> node. Then, when we reach node $w$ coming from node $v$, node $w$'s distance should be set one higher than that of node $v$.</p>
-<p>After you complete the algorithm, run it on the graph we used as an example in the lecture. Do you get the same result?</p>
-<p>Note however, that for now the algorithm does not keep track of the actual shortest paths. We can construct the shortest paths using a dictionary that stores the previous node for every node visited, that is, for every node $w$ that we find, it stores the node $v$ from which we arrive.</p>
-<p>For John, there is no previous node, so the value should be <code>None</code>. For Helena, we found her first from John, so the previous node should be <code>John</code>, and so on.</p>
-<p>Complete the function <code>bfs_track_path</code> in <code>ses07.py</code>. You can test your implementation with</p>
-<pre><code>python ok -q bfs_track_path
-</code></pre>
-<p>Once you've implemented this function, you can use the function <code>print_paths</code> included in the file to print the path:</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">dists</span><span class="p">,</span> <span class="n">prev_nodes</span> <span class="o">=</span> <span class="n">bfs_track_path</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">'John'</span><span class="p">)</span>
-<span class="n">print_path</span><span class="p">(</span><span class="n">prev_nodes</span><span class="p">,</span> <span class="s1">'Donald'</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>Test the algorithm again. You can use the function <code>print_path</code> to print out the path from the start node to any other node.</p>
+<p><strong>Extra.</strong> <em>(You do not need to implement this part and there is no ok test.)</em> Notice that the algorithm as implemented now assumes that there is a path from the start node to all other nodes in the graph. So, in the directed lecture graph, starting from a node other than <code>a</code> (say, <code>b</code>) will produce an error. How would you fix this problem in the code?</p>
 </div>
 </div>
 </div>
@@ -7883,8 +7721,8 @@ The algorithm steps are exactly those in the recipe above. We start with a graph
 <h2 id="Review">Review<a class="anchor-link" href="#Review">¶</a></h2><p>How would you explain to a classmate:</p>
 <ul>
 <li>How do we represent networks as graphs?</li>
-<li>The steps of the BFS algorithm?</li>
-<li>The computational complexity of BFS?</li>
+<li>The steps of Dijkstra's algorithm?</li>
+<li>The computational complexity of Dijkstra's algorithm?</li>
 </ul>
 </div>
 </div>
@@ -7896,12 +7734,20 @@ The algorithm steps are exactly those in the recipe above. We start with a graph
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Optional-Exercises">Optional Exercises<a class="anchor-link" href="#Optional-Exercises">¶</a></h2><h3 id="Small-worlds-and-Kevin-Bacon-numbers">Small worlds and Kevin Bacon numbers<a class="anchor-link" href="#Small-worlds-and-Kevin-Bacon-numbers">¶</a></h3><p>We'll next use the BFS algorithm to examine the small worlds phenomenon on a large movie dataset from the Internet Movie Database. The idea simple: everyone in the world is purportedly connected by a surprisingly small number of connections in a social graph. You'll test this idea by finding the distances between Hollywood actors. Connections between actors are defined as movies where they acted together. For example, the prolific actor Kevin Bacon is said to be very well connected by this measure.</p>
-<p>The file <code>moviesg.txt</code> contains a small sample of movie data; a larger sample is provided in <code>movies.txt</code>. These data are available freely from IMDB, the cleaned data is courtesy of Robert Sedgewick, Princeton University. The function <code>read_movie_data</code> is provided in the code file to read this data into a graph.</p>
-<p>Make sure the data is in the same directory in VS Code before reading the data.</p>
-<h3 id="Question-4">Question 4<a class="anchor-link" href="#Question-4">¶</a></h3><p>Use your BFS implementation in <code>ses07.py</code> to find the shortest distances and paths from Kevin Bacon to actors Nicole Kidman and Marlon Brando. What is the largest distance from Kevin Bacon in the graph? What is the distribution of distances? Notice that the algorithm will output double distances with these data, as it will count the distance from an actor to a movie as one edge and from the movie to another actor as another one.</p>
-<p>There are no tests for this question - it is left for you to explore the movie network. What are the largest distances from Kevin Bacon you can find?</p>
-<p>Here are some ideas to get you started:</p>
+<h2 id="Optional-exercises">Optional exercises<a class="anchor-link" href="#Optional-exercises">¶</a></h2>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Graphs,-the-easy-way">Graphs, the easy way<a class="anchor-link" href="#Graphs,-the-easy-way">¶</a></h3><p>When working on graph problems in practice, we can usually apply readymade Python libraries. Today we'll use the popular <code>networkx</code> library to study shortest distances on a London Underground dataset.</p>
+<p>The Python file <code>ses08_extra.py</code> contains sample code for using the <code>networkx</code> library.</p>
+<p>We first import the library and read the lecture network into the graph data structure that networkx uses. With the graph at hand, we can calculate shortest distances and paths with a single command.</p>
 </div>
 </div>
 </div>
@@ -7913,14 +7759,11 @@ The algorithm steps are exactly those in the recipe above. We start with a graph
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">read_movie_data</span><span class="p">(</span><span class="s2">"movies.txt"</span><span class="p">)</span>
-<span class="n">s</span> <span class="o">=</span> <span class="s1">'Bacon, Kevin'</span>
-<span class="n">print_children</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
 
-<span class="n">dists</span><span class="p">,</span> <span class="n">prev_nodes</span> <span class="o">=</span> <span class="n">bfs_track_path</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
-
-<span class="n">to_find</span> <span class="o">=</span> <span class="s1">'Kidman, Nicole'</span>
-<span class="n">print_path</span><span class="p">(</span><span class="n">prev_nodes</span><span class="p">,</span> <span class="n">to_find</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">create_lecture_graph_networkx</span><span class="p">()</span>
+<span class="n">shortest_dists</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">single_source_dijkstra_path_length</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="s1">'A'</span><span class="p">)</span>
+<span class="n">all_shortest_dists</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">all_pairs_dijkstra_path_length</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7933,30 +7776,274 @@ The algorithm steps are exactly those in the recipe above. We start with a graph
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Depth-first-search">Depth-first search<a class="anchor-link" href="#Depth-first-search">¶</a></h3><p>Another useful and widely applied graph-search algorithm is depth-first search (DFS). The idea resembles that of BFS. From a starting node, we explore aggressively in one direction until we cannot do it anymore. Then we trace back our steps until we can explore something new, and repeat. We can think of this as the approach of exploring a maze - much like in the story of <a href="https://en.wikipedia.org/wiki/Theseus#The_myth_of_Theseus_and_the_Minotaur">Theseus and the Minotaur</a>.</p>
-<p>Your task is to implement this algorithm in Python, as per the recipe below. The algorithm itself is very similar to BFS. The main difference is that in BFS we were using a queue: a first-in first-out data structure. This allowed us to explore the graph in layers. With DFS, we want to explore the graph depths aggressively, so instead we need a first-in last-out data structure. The data structure suitable for this is called a <em>stack</em>, but it can be implemented conveniently in Python using a list without loss of efficiency. We'll use list operations to append and pop in the end of the list as appropriate.</p>
-<p><strong>Algorithm</strong> (DFS):</p>
+<p>The folder also contains the Excel file <code>tube_data.xls</code>. It contains London Underground network interstation travel times for the network as it existed about a decade ago. We can read the data into Python using pandas. (We'll return to pandas in the last session.)</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Read London underground data.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">tube_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">'tube_data.xls'</span><span class="p">,</span> <span class="n">sheetname</span><span class="o">=</span><span class="s1">'Runtime'</span><span class="p">)</span>
+<span class="n">tube_data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Distance (Kms)</th>
+<th>Un-impeded Running Time (Mins)</th>
+<th>AM peak (0700-1000) Running Time (Mins)</th>
+<th>Inter peak (1000 - 1600) Running time (mins)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>count</th>
+<td>743.000000</td>
+<td>743.000000</td>
+<td>743.000000</td>
+<td>743.000000</td>
+</tr>
+<tr>
+<th>mean</th>
+<td>1.313230</td>
+<td>2.052647</td>
+<td>2.442105</td>
+<td>2.394008</td>
+</tr>
+<tr>
+<th>std</th>
+<td>1.029361</td>
+<td>1.048971</td>
+<td>1.117481</td>
+<td>1.102516</td>
+</tr>
+<tr>
+<th>min</th>
+<td>0.250000</td>
+<td>0.766667</td>
+<td>1.000000</td>
+<td>1.000000</td>
+</tr>
+<tr>
+<th>25%</th>
+<td>0.745000</td>
+<td>1.483333</td>
+<td>1.954017</td>
+<td>1.750000</td>
+</tr>
+<tr>
+<th>50%</th>
+<td>1.060000</td>
+<td>1.850000</td>
+<td>2.000000</td>
+<td>2.000000</td>
+</tr>
+<tr>
+<th>75%</th>
+<td>1.590000</td>
+<td>2.283333</td>
+<td>2.865151</td>
+<td>2.750000</td>
+</tr>
+<tr>
+<th>max</th>
+<td>11.630000</td>
+<td>11.016667</td>
+<td>11.500000</td>
+<td>11.500000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The distances are provided as both distances and travel times. Let's read the data into a graph.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tube_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">'Station from (A)'</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s1">'Station to (B)'</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s1">'AM peak (0700-1000) Running Time (Mins)'</span><span class="p">])</span>
+
+<span class="c1"># Get all edges with weights </span>
+<span class="n">all_edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Finally, let's calculate shortest distances.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">all_shortest_dists</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">all_pairs_dijkstra_path_length</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">all_shortest_paths</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">all_pairs_dijkstra_path</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
+<span class="n">all_shortest_dists_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">all_shortest_dists</span><span class="p">)</span>
+<span class="n">all_shortest_paths_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">all_shortest_paths</span><span class="p">)</span>
+
+<span class="n">all_shortest_dists_dict</span><span class="p">[</span><span class="s1">'SOUTH KENSINGTON'</span><span class="p">][</span><span class="s1">'LIVERPOOL STREET'</span><span class="p">]</span>
+<span class="n">all_shortest_paths_dict</span><span class="p">[</span><span class="s1">'SOUTH KENSINGTON'</span><span class="p">][</span><span class="s1">'LIVERPOOL STREET'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Inspect the results and compare them to the <a href="http://content.tfl.gov.uk/standard-tube-map.pdf">Tube map</a>. There is something funny going on... What are we missing in the data?</p>
+<blockquote>
+<p><strong>Advanced.</strong> There are many other great Python libraries for dealing with network and graph data. For example, the <a href="http://geoffboeing.com/2016/11/osmnx-python-street-networks/"><code>osmnx</code></a> library builds on <code>networkx</code> to combine its algorithms with map data from the <a href="https://www.openstreetmap.org/">OpenStreetMap</a> service.</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Dijkstra-with-a-heap">Dijkstra with a heap<a class="anchor-link" href="#Dijkstra-with-a-heap">¶</a></h3><p>We can dramatically improve the speed of our implementation of Dijkstra's algorithm using a specific data structure: a heap (or a priority queue). The heap data structure's core strength is its fast means for find the minimum value within it. This can be done in $O(\log n)$, while for a list this would take linear time. A heap also allows item deletion and insertion in $O(\log n)$ time.</p>
+<p>Conveniently, these are precisely the operations we repeatedly need in Dijkstra's algorithm. We'd like to hold the edges connecting $X$ and $V-X$ in a "priority queue" where they are ordered not by when they enter the queue as in breadth-first search, but by their Dijkstra score. Then we could simply pick the best edge in every iteration. The problem is that we need to keep the queue in order when updating Dijkstra scores. This is where a heap becomes useful: by virtue of logarithmic-time heap operations, we can manage this in $O(m \log n)$.</p>
+<p>It is useful take a moment to compare this approach to breadth-first search. In both algorithms, we loop through all nodes and keep a queue of which node to visit next. In BFS, with no edge weights, we had a simple queue of nodes and didn't need priorities. In Dijkstra, to account for weights, we keep a priority queue to visit the nodes in the correct order. The heap data structure allows precisely this functionality, with logarithmic operations to manage the priority order.</p>
+<p>Although the inner workings of heaps are interesting, we will not go into detail here - you can find great material on them in the algorithms books suggested in the syllabus, or various online sources. If you want to go further, you can try implementing a heap yourself, but this is beyond the scope of this course.</p>
+<p>For this exercise, we will instead use a built-in heap queue implementation from the <code>heapq</code> library. While it is very convenient, it does not in fact have a logarithmic-time <code>delete</code> method of a standard heap. Therefore we suggest you implement the algorithm relying on just insertion and extracting the minimum, as follows.</p>
+<p><strong>Initialize</strong>: (starting vertex $s$)</p>
 <ul>
-<li>Pick a starting node $s$ and initialize set of explored nodes as empty but for $s$</li>
-<li>Initialize an empty list $L$ of reachable nodes, append $s$ to list</li>
-<li>While $L$ is not empty:<ul>
-<li>Pop last item of $L$ as current node $v$</li>
-<li>For each edge $(v,w)$: if $w$ unexplored:<ul>
-<li>Mark $w$ explored</li>
-<li>Append $w$ to end of $L$</li>
+<li>The set of vertices gone through so far $X$ = empty, add $s$ to $X$</li>
+<li>The shortest distances to all vertices: dictionary $A$: $A[s] = 0$</li>
+<li>A heap queue $Q$ of tuples $(score,node)$ from the nodes in $A$ ordered by their Dijkstra score (just $s$ for now)</li>
+</ul>
+<p><strong>Main loop</strong>: While $Q$ is not empty:</p>
+<ul>
+<li>If we have visited all nodes, break the loop and finish the algorithm</li>
+<li>Otherwise, extract the minimum-value vertex from $Q$ as $v$, add $v$ to visited</li>
+<li>Go through all edges $(v,w)$ ending in $V-X$:<ul>
+<li>For any $w$, if the Dijkstra score $A[v] + c_{vw}$ is lower than current $A[w]$, update $A[w]$, and insert the updated $w$ and its score into $Q$. The heap queue $Q$ will then keep track of the priorities of the nodes.</li>
 </ul>
 </li>
 </ul>
-</li>
+<p>Take a moment to understand the algorithm. Note that the algorithm is presented slightly differently than in the lecture in that the best <em>current</em> Dijkstra scores are kept in both $A$ and in $Q$. We are keeping a priority queue of the "best" nodes we could explore next, exactly as we should for Dijkstra's algorithm. But we are in fact adding too many things into the queue. That is, whenever we update a node's Dijkstra score (to be lower), we add it to $Q$, even if the same node already exists in $Q$. We never remove the earlier instance of the same node. The updated lower Dijkstra score will have priority over the old one, but the queue will grow because of this. It is therefore useful to break the loop once we have visited all the nodes.</p>
+<p>This is not the most elegant implementation of the algorithm, but it is useful and much faster than the implementation above.</p>
+<h3 id="Question-4">Question 4<a class="anchor-link" href="#Question-4">¶</a></h3><p>Complete the Dijkstra's algorithm implementation in the Python file <code>ses08_extra.py</code> using the operations of the <code>heapq</code> module.</p>
+<p>Here are the heap queue operations you'll use:</p>
+<ul>
+<li><code>heapify(Q)</code>: initializes the heap queue (eg from a list <code>Q</code>)</li>
+<li><code>heappop(Q)</code>: extracts (returns) the minimum-value element from the heap queue</li>
+<li><code>heappush(Q, element)</code>: inserts an element into the queue (correctly for its priority)</li>
 </ul>
-<p>Notice how closely this resembles to BFS. When you implement the algorithm, you're also asked to keep track of two things using dictionaries: the previous node where each node was reached, and the order in which they were popped from the list. These allow you to see the order in which the algorithm goes through the nodes, and compare to BFS.</p>
-<h3 id="Question-5">Question 5<a class="anchor-link" href="#Question-5">¶</a></h3><p>Complete the function <code>dfs</code> in the file <code>ses07_extra.py</code>. You can test your implementation with</p>
-<pre><code>python ok -q dfs
-</code></pre>
-<p>Note that the test graph for DFS is slightly different from the one we used in the class.</p>
-<p>Notice also that the tests for this exercise are not very comprehensive. This is because we're using unordered data structures (sets, dictionaries) and therefore the exact search order of your algorithm may not be the same on all computers. If you'd like to get more feedback on your implementation, ask a tutor to look at your code and results.</p>
-<p>Use the algorithm to search through the example from the class. How different is the DFS approach from BFS in this case?</p>
-<p>We used BFS to find shortest paths in a graph - is DFS as good for this purpose? Search online for comparisons on what kinds of problems you would rather solve with the two graph search approaches.</p>
+<p>Notice that the <code>heapq</code> module <em>does not create a separate data structure</em>, but works on a standard Python list. It uses "heap operations" to keep the list in the heap order, where the first element is the one with the lowest cost, and the remaining elements are ordered in a way that makes logarithmic operations possible. For details on heap operations and implementing a heap in Python, see <a href="https://runestone.academy/ns/books/published/pythonds/index.html">Miller and Ranum's chapters 7.8-7.10 on heaps</a>. Notice that since a heap is efficient at keeping items sorted, it lends itself to a sorting algorithm called <em>heap sort</em>.</p>
+<p>Compare the algorithm's speed with that of the first implementation for larger graphs. You can generate simple random graphs using the function <code>random_graph</code> in <code>ses08_extra.py</code>. Here's one way of doing so:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)]</span> <span class="c1"># Create nodes that are named integers</span>
+<span class="n">max_edges</span> <span class="o">=</span> <span class="mi">100000</span> <span class="c1"># Max number of edges for random graph</span>
+
+<span class="c1"># Create random graph and time the two algorithms</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">random_graph</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">max_edges</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">list_edges</span><span class="p">())</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="o">%</span><span class="k">timeit</span> dijkstra_heap(g,start)
+<span class="o">%</span><span class="k">timeit</span> dijkstra(g,start)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The last two commands, preceded by percentage symbols, work in a Jupyter Notebook. They will not work in standard Python files. They are called "magic" IPython commands, and are used for adding convenient functionality to Python. For more on IPython magic, see</p>
+<ul>
+<li><a href="https://jakevdp.github.io/PythonDataScienceHandbook/01.03-magic-commands.html">This chapter</a> of the Data Science Handbook</li>
+<li><a href="http://ipython.readthedocs.io/en/stable/interactive/magics.html">The IPython documentation</a></li>
+</ul>
 </div>
 </div>
 </div>

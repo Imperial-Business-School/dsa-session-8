@@ -1,21 +1,21 @@
 test = {
-  'name': 'test_ses07_solution_create_bfs_graph_0',
+  'name': 'test_ses08_solution_lecture_graph_0',
   'points': 1,
   'suites': [
     {
       'cases': [
         {
           'code': r"""
-          >>> ex_graph = create_bfs_graph()
-          >>> [x in ex_graph.children_of('Jared') for x in ['John', 'Helena', 'Donald', 'Paul']]
-          [False, False, True, True]
+          >>> adj_list = lecture_graph()
+          >>> adj_list['d']['e']
+          2
           """,
           'hidden': False
         }
       ],
       'scored': True,
       'setup': r"""
-      >>> from ses07 import *
+      >>> from ses08 import *
       """,
       'teardown': '',
       'type': 'doctest'
